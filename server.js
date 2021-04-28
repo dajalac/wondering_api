@@ -8,7 +8,7 @@ const dotenv = require('dotenv');
 dotenv.config(); //to grab the env variables
 
 // conecting to the database
-const knex = require('knex')({
+ const db = knex ({
     client: 'pg',
     connection: {
       host : '127.0.0.1', // indicates where the db is. For now it is in my computer 
@@ -33,6 +33,21 @@ app.get('/', (req, res)=>{
 
 app.post('/signin', (req, res)=>{
     res.json ('signing')
+})
+
+app.post('/register',(req, res)=>{
+    const {name, email} = req.body;
+
+    db('users').insert({
+        email:email,
+        name:name,
+        joined: new Date()
+    })
+    .returning('*')
+    .then(response =>{
+        res.json(response[0])
+    })
+    .catch(err => res.status(400).json('unable to register'))
 })
 
 app.listen(process.env.PORT, ()=>{
