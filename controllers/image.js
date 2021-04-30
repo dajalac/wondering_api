@@ -23,25 +23,35 @@ const imageHandler =(req, res,db)=>{
     const{id, numberOfFace} = req.body;
 
     // increment the number of faces detected
-     const userNumberOfFaces = db('users').where('id', '=', id)
-        .increment('number_faces', numberOfFace.lenght)
+        db('users').where('id', '=', id)
+        .increment('number_faces', numberOfFace.length)
         .returning('number_faces')
         .then(value =>{
-             console.log('value', value)
+            db('users').count('* as ranking')
+            .where('number_faces','>', value[0])
+            .returning('ranking')
+            .then(ranking =>{
+                console.log(Object.values(ranking[0]))
+                console.log(ranking[0])
+                //res.json(ranking)
+            })
+            .catch(err => res.status(400).json('unable to calculate ranking'))
         })
+        .catch(err => res.status(400).json('unable to get ranking'))
 
-    console.log('number of faces',numberOfFace[0])
 
-    // ranking 
-        db('users').count('id as ranking')
-        .where('number_faces'> userNumberOfFaces)
+    // ranking
+    /* 
+        db('users').count('* as ranking')
+        .where('number_faces','>', 25)
         .returning('ranking')
         .then(ranking =>{
             console.log(Object.values(ranking[0])+1)
+            console.log('hih', userNumberOfFaces[0])
             console.log(ranking[0])
-            res.json(ranking)
+            //res.json(ranking)
         })
-        .catch(err => res.status(400).json('unable to get ranking'))
+        .catch(err => res.status(400).json('unable to get ranking'))*/
        
 
     /*
