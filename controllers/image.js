@@ -24,15 +24,26 @@ const imageHandler =(req, res,db)=>{
 
     // increment the number of faces detected
         db('users').where('id', '=', id)
-        .increment('number_faces', numberOfFace.length)
+        .increment('number_faces', numberOfFace)
         .returning('number_faces')
         .then(value =>{
             db('users').countDistinct('id as ranking')
             .where('number_faces','>', value[0])
             .returning('ranking')
-            .then(ranking =>{
-                res.json([1 +( + ranking[0].ranking),value[0] ])
-
+            .then(response =>{
+                //res.json([1 +( + ranking[0].ranking),value[0] ])
+                db('users').where('id', '=', id)
+                .update({"ranking": 1 +( + response[0].ranking)})
+                .returning(['ranking', 'number_faces'])
+                .then(data =>{
+                    console.log(numberOfFace)
+                    console.log(data[0].number_faces)
+                    res.json( [data[0].ranking,data[0].number_faces])
+                })
+               
+                
+               
+               
             })
             .catch(err => res.status(400).json('unable to calculate ranking'))
         })
