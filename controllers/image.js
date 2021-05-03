@@ -36,8 +36,6 @@ const imageHandler =(req, res,db)=>{
                 .update({"ranking": 1 +( + response[0].ranking)})
                 .returning(['ranking', 'number_faces'])
                 .then(data =>{
-                    console.log(numberOfFace)
-                    console.log(data[0].number_faces)
                     res.json( [data[0].ranking,data[0].number_faces])
                 })
                
