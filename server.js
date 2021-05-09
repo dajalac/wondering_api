@@ -8,6 +8,7 @@ const register = require('./controllers/register');
 const signin = require('./controllers/signin');
 const profile = require('./controllers/profile');
 const image = require('./controllers/image');
+const forgotPassword = require('./controllers/forgotPassword');
 
 
 dotenv.config(); //to grab the env variables
@@ -31,7 +32,6 @@ app.use(cors());
 
 
 
-
 app.get('/', (req, res)=>{
     res.json('this is working')
 })
@@ -46,6 +46,7 @@ app.get('/profile/:id', (req, res) => {profile.profileHandler(req, res, db)})
 app.put('/image', (req, res) => {image.imageHandler(req, res, db)})
 app.post('/imageurl', (req, res) => {image.apiCallHandler(req, res)})
 
+app.post('/forgotPassword', (req, res)=>(forgotPassword.forgotPasswordHadler(req, res, db)))
 
 app.listen(process.env.PORT, ()=>{
     console.log(`app is up running ${process.env.PORT}`)
