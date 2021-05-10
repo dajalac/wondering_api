@@ -1,6 +1,4 @@
-const dotenv = require('dotenv');
 
-dotenv.config(); 
 
 
 const forgotPasswordHadler = (req, res,db)=>{
@@ -15,7 +13,7 @@ const forgotPasswordHadler = (req, res,db)=>{
     .then(response =>{
         console.log(response)
         if (response.length > 0){
-            // sent email
+            // send email
             res.json(true)
         } else{
             res.json(false)
