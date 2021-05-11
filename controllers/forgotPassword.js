@@ -16,7 +16,7 @@ const forgotPasswordHadler = (req, res,db)=>{
         if (response.length > 0){
             const secret = createSecret.createSecret(response[0].hash)
             const link = tokenAndLink.createLink(response, secret)
-            sentEmail.sendUserEmail(link)
+            sentEmail.sendUserEmail(response[0].email,link)
             res.json(link)
         } else{
             res.json(false)
