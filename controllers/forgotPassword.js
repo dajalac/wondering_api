@@ -1,4 +1,6 @@
-
+const createSecret = require ('../cors/createSecret')
+const tokenAndLink = require ('../cors/tokenAndLink')
+const sentEmail = require('../cors/sendEmail')
 
 
 const forgotPasswordHadler = (req, res,db)=>{
@@ -8,13 +10,14 @@ const forgotPasswordHadler = (req, res,db)=>{
     const { email} = req.body;
 
     // check if email is in db
-    db.select('email').from('login')
+    db.select('*').from('login')
     .where('email','=',email) 
     .then(response =>{
-        console.log(response)
         if (response.length > 0){
-            // send email
-            res.json(true)
+            const secret = createSecret.createSecret(response[0].hash)
+            const link = tokenAndLink.createLink(response, secret)
+            sentEmail.sendUserEmail(link)
+            res.json(link)
         } else{
             res.json(false)
         }
