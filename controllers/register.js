@@ -1,6 +1,7 @@
 const registerHandler = (req, res, db, bcrypt) => {
     const { email, name, password } = req.body;
 
+
     //check if they are empty
     if(email==='' || name ===''|| password===''){
        return res.status(400).json('incorrect form submission');

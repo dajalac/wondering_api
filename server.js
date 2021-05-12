@@ -9,6 +9,7 @@ const signin = require('./controllers/signin');
 const profile = require('./controllers/profile');
 const image = require('./controllers/image');
 const forgotPassword = require('./controllers/forgotPassword');
+const resetPassword = require('./controllers/resetPassword');
 
 
 dotenv.config(); //to grab the env variables
@@ -40,13 +41,15 @@ app.post('/signin', (req, res) => {signin.signinHandler(req, res, db, bcrypt)})
 
 app.post('/register', (req, res) => {register.registerHandler(req, res, db, bcrypt)})
 
-// : means that you can put watever you want. In our case we are putting the user id
 app.get('/profile/:id', (req, res) => {profile.profileHandler(req, res, db)})
 
 app.put('/image', (req, res) => {image.imageHandler(req, res, db)})
 app.post('/imageurl', (req, res) => {image.apiCallHandler(req, res)})
 
 app.post('/forgotPassword', (req, res)=>(forgotPassword.forgotPasswordHadler(req, res, db)))
+
+app.get('/resetPassword/:id/:token', (req, res)=>(resetPassword.resetPasswordHandler(req, res, db)))
+app.post('/updatePassword', (req, res)=>(resetPassword.updatePasswordHandler(req, res, db, bcrypt)))
 
 app.listen(process.env.PORT, ()=>{
     console.log(`app is up running ${process.env.PORT}`)

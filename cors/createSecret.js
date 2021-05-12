@@ -7,6 +7,7 @@ const createSecret = (userPassword) =>{
 
      const secret = JWT_SECRET + userPassword; 
 
+
      return secret; 
 
 } 
