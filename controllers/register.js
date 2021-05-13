@@ -1,11 +1,14 @@
-const registerHandler = (req, res, db, bcrypt) => {
+
+const registerHandler = (req, res, db, bcrypt,validationResult) => {
+    
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        console.log(errors.array())
+        res.json({errors: errors.array()})
+    }else{
+   
     const { email, name, password } = req.body;
-
-
-    //check if they are empty
-    if(email==='' || name ===''|| password===''){
-       return res.status(400).json('incorrect form submission');
-    }
+ 
     const hash = bcrypt.hashSync(password);
     //first inserting into login table then inserting into users table
     db.transaction(trx => {
@@ -31,7 +34,8 @@ const registerHandler = (req, res, db, bcrypt) => {
             .then(trx.commit)
             .catch(trx.rollback)
     })
-        .catch(err => res.status(400).json('unable to register'))
+        .catch(err => res.status(400).json({errors:'unable to register user'}))
+}
 
 }
 

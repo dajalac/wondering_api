@@ -29,30 +29,29 @@ const resetPasswordHandler = (req, res,db)=>{
     }) 
 }
 
-const updatePasswordHandler = (req, res,db,bcrypt)=>{
+const updatePasswordHandler = (req, res,db,bcrypt,validationResult)=>{
+
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        console.log(errors.array())
+        res.json({message: errors.array()})
+    }else{
+
    const {password1, password2, id} = req.body;
-  
   
 
     if (password1 !== password2) {
         res.json({ message: 'passwords do not match' })
-    } else {
+    }
+     else {
     const hash = bcrypt.hashSync(password1);
         db('login').where('id', '=', id)
             .update({ "hash": hash })
             .then(response => {
-                console.log('sucesso!', response)
                 res.json({ message: 'password updated with sucess' })           
-    /*
-    db('login').where('id', '=', id)
-    .update({"hash": hash})
-    .then(response =>{
-        console.log('sucesso!',response)
-        res.json({message: 'password updated with sucess'})
-    })*/
-
    
    })
+}
 }
 }
 

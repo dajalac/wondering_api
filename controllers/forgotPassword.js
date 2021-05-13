@@ -3,7 +3,12 @@ const tokenAndLink = require ('../cors/tokenAndLink')
 const sentEmail = require('../cors/sendEmail')
 
 
-const forgotPasswordHadler = (req, res,db)=>{
+const forgotPasswordHadler = (req, res,db,validationResult)=>{
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        res.json(false)
+    }else{
+    
     const { email} = req.body;
 
     // check if email is in db
@@ -20,6 +25,7 @@ const forgotPasswordHadler = (req, res,db)=>{
         }
     })
     .catch(err =>res.status(400).json('unable to get user'))
+}
 }
 
 module.exports = {
