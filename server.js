@@ -49,26 +49,29 @@ app.post('/register', [
                       check('email').isEmail(),
                       check('password').isAlphanumeric(),
                       check('name').isAlpha()
-                      ], (req, res) => { register.registerHandler(req, res, db, bcrypt, validationResult) })
+                      ], (req, res) => { register.registerHandler(req, res, db, bcrypt, validationResult) });
 
-app.get('/profile/:id', (req, res) => {profile.profileHandler(req, res, db)})
+app.get('/profile/:id', (req, res) => {profile.profileHandler(req, res, db)});
 
-app.put('/image', (req, res) => {image.imageHandler(req, res, db)})
-app.post('/imageurl', (req, res) => {image.apiCallHandler(req, res)})
+app.put('/image', (req, res) => {image.imageHandler(req, res, db)});
+app.post('/imageurl', (req, res) => {image.apiCallHandler(req, res)});
 
 app.post('/forgotPassword',[
                             check('email').isEmail()
-                          ], (req, res)=>(forgotPassword.forgotPasswordHadler(req, res, db,validationResult)))
+                          ], (req, res)=>(forgotPassword.forgotPasswordHadler(req, res, db,validationResult)));
 
-app.get('/resetPassword/:id/:token', (req, res)=>(resetPassword.resetPasswordHandler(req, res, db)))
+app.get('/resetPassword/:id/:token', (req, res)=>(resetPassword.resetPasswordHandler(req, res, db)));
+
 app.post('/updatePassword',[
                           check('password1').isAlphanumeric(),
                           check('password2').isAlphanumeric(),
-                          ], (req, res)=>(resetPassword.updatePasswordHandler(req, res, db, bcrypt,validationResult)))
+                          ], (req, res)=>(resetPassword.updatePasswordHandler(req, res, db, bcrypt,validationResult)));
 
 app.post('/updateName',[
                           check('name').isAlphanumeric()
-                        ], (req,res)=>{setting.editNameHandler(req, res, db,validationResult)})
+                        ], (req,res)=>{setting.editNameHandler(req, res, db,validationResult)});
+
+app.post('/deleteUser',(req,res)=>{setting.deleteAccountHandler(req,res,db)});
 
 app.listen(process.env.PORT, ()=>{
     console.log(`app is up running ${process.env.PORT}`)

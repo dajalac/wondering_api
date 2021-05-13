@@ -24,6 +24,24 @@ const editNameHandler = ((req, res, db,validationResult)=>{
     }
 })
 
+const deleteAccountHandler = ((req, res, db)=>{
+    const {id} = req.body
+
+    db('login')
+    .where('id','=', id)
+    .del()
+    .then(response =>{
+        if(response>0){
+            res.json({message:'user deleted'})
+        }
+        else{
+            res.json({message:'unable to delete user'})
+        }
+    })
+    .catch(err => res.status(400).json({message: 'something went wrong'}))
+})
+
 module.exports={
-    editNameHandler: editNameHandler
+    editNameHandler: editNameHandler,
+    deleteAccountHandler: deleteAccountHandler
 }
