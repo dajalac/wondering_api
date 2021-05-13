@@ -19,9 +19,9 @@ const forgotPasswordHadler = (req, res,db,validationResult)=>{
             const secret = createSecret.createSecret(response[0].hash)
             const link = tokenAndLink.createLink(response, secret)
             sentEmail.sendUserEmail(response[0].email,link)
-            res.status(200).json(link)
+            res.json(true)
         } else{
-            res.satatus(400).json('something went woring')
+            res.json(false)
         }
     })
     .catch(err =>res.status(400).json('unable to get user'))

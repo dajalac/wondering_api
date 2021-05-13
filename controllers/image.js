@@ -39,9 +39,6 @@ const imageHandler =(req, res,db)=>{
                     res.json( [data[0].ranking,data[0].number_faces])
                 })
                
-                
-               
-               
             })
             .catch(err => res.status(400).json('unable to calculate ranking'))
         })
