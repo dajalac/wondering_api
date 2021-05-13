@@ -18,15 +18,15 @@ const setting = require('./controllers/setting');
 dotenv.config(); //to grab the env variables
 
 // conecting to the database
- const db = knex ({
-    client: 'pg',
-    connection: {
-      host : '127.0.0.1', // indicates where the db is. For now it is in my computer 
-      user : 'postgres', //user of the db. just give \d to find out
-      password : ' ',
-      database : 'wondering'
+const db = knex({
+  client: 'pg',
+  connection: {
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false
     }
-  });
+  }
+});
 
 
 const app = express();
@@ -51,7 +51,6 @@ app.post('/register', [
                       check('name').isAlpha()
                       ], (req, res) => { register.registerHandler(req, res, db, bcrypt, validationResult) });
 
-app.get('/profile/:id', (req, res) => {profile.profileHandler(req, res, db)});
 
 app.put('/image', (req, res) => {image.imageHandler(req, res, db)});
 app.post('/imageurl', (req, res) => {image.apiCallHandler(req, res)});
