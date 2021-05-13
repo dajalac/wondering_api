@@ -11,6 +11,7 @@ const profile = require('./controllers/profile');
 const image = require('./controllers/image');
 const forgotPassword = require('./controllers/forgotPassword');
 const resetPassword = require('./controllers/resetPassword');
+const setting = require('./controllers/setting');
 
 
 
@@ -65,7 +66,9 @@ app.post('/updatePassword',[
                           check('password2').isAlphanumeric(),
                           ], (req, res)=>(resetPassword.updatePasswordHandler(req, res, db, bcrypt,validationResult)))
 
-
+app.post('/updateName',[
+                          check('name').isAlphanumeric()
+                        ], (req,res)=>{setting.editNameHandler(req, res, db,validationResult)})
 
 app.listen(process.env.PORT, ()=>{
     console.log(`app is up running ${process.env.PORT}`)
