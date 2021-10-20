@@ -7,3 +7,4 @@ A live version can be found [here](https://dajalac.github.io/wondering)
 - Express
 - Clarifi API
 - JSON Web Token 
+- PostgreSQL
